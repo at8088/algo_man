@@ -22,9 +22,9 @@ void traitement_seq(){
 void affiche(int t[],int n){
     for (int i = 0; i < n; i++)
     {
-        printf("%d\t",t[i]);
+        printf("%d ,",t[i]);
     }
-    puts("");
+    puts("**fin**");
 }
 bool suite_est_croiss(int a, int b, int c, int d, int e, int f ){
     return (a < b) && (b < c) && (c < d) && (d < e )&& (e < f);
@@ -103,7 +103,7 @@ void swap(int t[] , int i1 , int i2){
     return ;
 }
 void segmentation(int t[] , unsigned int size ,unsigned int * indice_pivot){
-   if(size ==1) *indice_pivot=0;return; 
+   if(size ==1) {*indice_pivot=0;return;} 
    swap(t,0,size-1);
    int j = 0;
    for(unsigned int i=0 ; i<=size-2 ; i++){
@@ -356,7 +356,10 @@ void copie(int dest[],int src[],int size){
 void tri_rapide(int t[],unsigned int size){         /*marche pas*/
     int *pivot = (int*)malloc(sizeof(int));
     segmentation(t,size,pivot);
-    tri_rapide(t,*pivot);
-    tri_rapide(t,*pivot+1);
+    if (*pivot-1 > 0){
+        tri_rapide(t,*pivot);
+    }else if (*pivot < size-1){
+    tri_rapide(t+ (*pivot)+1,size);
+    }
     free(pivot);
 }
