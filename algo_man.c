@@ -353,7 +353,7 @@ void copie(int dest[],int src[],int size){
     memmove(dest,src,size * 4);
 }
 
-void tri_rapide(int t[],unsigned int size){
+void tri_rapide(int t[],unsigned int size){         /*marche pas*/
     int *pivot = (int*)malloc(sizeof(int));
     segmentation(t,size,pivot);
     tri_rapide(t,*pivot);
