@@ -70,31 +70,31 @@ void fusion (int f[],int t1[] , unsigned int size1 , int t2[] , unsigned int siz
     unsigned int it1=0,it2=0,i=0;
     if (size1==0)  f=t2;
     if (size2==0)  f=t1;
-   // int * f = (int*)calloc(size1+size2,sizeof(int));
-    while (it1 < size1 && it2 < size2){
-        if(t1[it1] < t2[it2]){
+
+    while (it1 < size1 || it2 < size2){
+        if( (t1[it1] < t2[it2] && it1 < size1) || (it2 == size2 && it1 < size1)){
             f[i]=t1[it1];
             i++;
             it1++;
-        }else {
+        }
+        if((it2 < size2 && t2[it2] <= t1[it1]) || (it1 == size1 && it2 < size2)) {
             f[i]=t2[it2];
             i++;
             it2++;
         }
     }
-    while (it1 < size1){
+/*     while (it1 < size1){
         f[i]=t1[it1];
         i++;
         it1++;
-    }
+    } print t1[it1]
+
 
     while (it2 < size2){
         f[i]=t2[it2];
         i++;
         it2++;
-    }
-
-   // return f;
+    } */
 }
 void swap(int t[] , int i1 , int i2){
     int tmp = t[i1];
@@ -334,7 +334,7 @@ void tri_insertion(int t[], unsigned int size){
     }
 }
 void tri_fusion(int t[], unsigned int size){
-    if(size == 0 || size == 1) return;
+    if(size <=1) return;
     if (size == 2){
         if(t[0] > t[1]) swap(t,0,1);
         return;
@@ -345,6 +345,7 @@ void tri_fusion(int t[], unsigned int size){
     tri_fusion(t,mid);
     tri_fusion(t+mid,mid+size%2);
     fusion(fus,t,mid,t+mid,size-mid);
+    
     copie(t,fus,size);
     free(fus);
 }
@@ -355,7 +356,7 @@ void copie(int dest[],int src[],int size){
 
 void tri_rapide(int t[],unsigned int size){         /*marche pas*/
     if (size <= 1) return;
-    int *pivot = (int*)malloc(sizeof(int));
+    unsigned int *pivot = (unsigned int*)malloc(sizeof(unsigned int));
     segmentation(t,size,pivot);
     if (*pivot-1 > 0){
         tri_rapide(t,*pivot);
