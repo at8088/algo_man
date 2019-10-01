@@ -72,29 +72,17 @@ void fusion (int f[],int t1[] , unsigned int size1 , int t2[] , unsigned int siz
     if (size2==0)  f=t1;
 
     while (it1 < size1 || it2 < size2){
-        if( (t1[it1] < t2[it2] && it1 < size1) || (it2 == size2 && it1 < size1)){
+        if( (t1[it1] < t2[it2] || it2 == size2 ) && it1 < size1){
             f[i]=t1[it1];
             i++;
             it1++;
         }
-        if((it2 < size2 && t2[it2] <= t1[it1]) || (it1 == size1 && it2 < size2)) {
+        if( (t2[it2] <= t1[it1] || it1 == size1) && it2 < size2) {
             f[i]=t2[it2];
             i++;
             it2++;
         }
     }
-/*     while (it1 < size1){
-        f[i]=t1[it1];
-        i++;
-        it1++;
-    } print t1[it1]
-
-
-    while (it2 < size2){
-        f[i]=t2[it2];
-        i++;
-        it2++;
-    } */
 }
 void swap(int t[] , int i1 , int i2){
     int tmp = t[i1];
@@ -333,21 +321,16 @@ void tri_insertion(int t[], unsigned int size){
         t[j]=mem;
     }
 }
-void tri_fusion(int t[], unsigned int size){
+void tri_fusion(int *t, unsigned int size){
     if(size <=1) return;
-    if (size == 2){
-        if(t[0] > t[1]) swap(t,0,1);
-        return;
-    }
     int *fus = (int*)calloc(size,sizeof(int));
-  
     int mid = size/2;
     tri_fusion(t,mid);
-    tri_fusion(t+mid,mid+size%2);
+    tri_fusion(t+mid,size-mid);
     fusion(fus,t,mid,t+mid,size-mid);
-    
-    copie(t,fus,size);
-    free(fus);
+    // t=fus;                /*y u no work??*/
+    copie(t,fus,size);  
+    free(fus);         
 }
 
 void copie(int dest[],int src[],int size){
