@@ -20,6 +20,7 @@ void traitement_seq(){
     printf("la taille est : %d\n",len);
 }
 void affiche(int t[],int n){
+    if(n==0) return;
     for (int i = 0; i < n; i++)
     {
         printf("%d ,",t[i]);
@@ -70,29 +71,19 @@ void fusion (int f[],int t1[] , unsigned int size1 , int t2[] , unsigned int siz
     unsigned int it1=0,it2=0,i=0;
     if (size1==0)  f=t2;
     if (size2==0)  f=t1;
+
     while (it1 < size1 || it2 < size2){
-        if(it1 < size1 && t1[it1] < t2[it2]){
+        if( (t1[it1] < t2[it2] || it2 == size2 ) && it1 < size1){
             f[i]=t1[it1];
             i++;
             it1++;
         }
-        else if(it2 < size2){
+        if( (t2[it2] <= t1[it1] || it1 == size1) && it2 < size2) {
             f[i]=t2[it2];
             i++;
             it2++;
         }
     }
-    /* while (it1 < size1){
-        f[i]=t1[it1];
-        i++;
-        it1++;
-    }
-
-    while (it2 < size2){
-        f[i]=t2[it2];
-        i++;
-        it2++;
-    } */
 }
 void swap(int t[] , int i1 , int i2){
     int tmp = t[i1];
@@ -336,19 +327,15 @@ void tri_insertion(int t[], unsigned int size){
         t[j]=mem;
     }
 }
-void tri_fusion(int t[], unsigned int size){
-    if(size <= 1) return;
-    if (size == 2){
-        if(t[0] > t[1]) swap(t,0,1);
-        return;
-    }
+void tri_fusion(int *t, unsigned int size){
+    if(size <=1) return;
     int *fus = (int*)calloc(size,sizeof(int));
     int mid = size/2;
     tri_fusion(t,mid);
-    tri_fusion(t+mid,mid+size%2);
+    tri_fusion(t+mid,size-mid);
     fusion(fus,t,mid,t+mid,size-mid);
-    copie(t,fus,size);
-    free(fus);
+    copie(t,fus,size);  
+    free(fus);         
 }
 
 void copie(int dest[],int src[],int size){
@@ -358,18 +345,11 @@ void copie(int dest[],int src[],int size){
 /*marche pas*/
 void tri_rapide(int t[],unsigned int size){      
     if (size <= 1) return;
-    int pivot=0 ;
-    if(size ==2){
-        segmentation(t,size,&pivot);
-    }
+    unsigned int pivot;
     segmentation(t,size,&pivot);
-    if(pivot == 0){
-        tri_rapide(t+1 , size);
-    }
-    if (pivot-1 > 0){
+    if ((signed)pivot-1 > 0){
         tri_rapide(t,pivot);
-    }else if (pivot < size-1){
-        tri_rapide(t+pivot , size-pivot );
+    }if (pivot < size-1){
+        tri_rapide(t+pivot+1,size-pivot-1);
     }
-    //free(pivot);
 }

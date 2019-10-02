@@ -1,26 +1,16 @@
 #include "algo_man.h"
 #include <time.h>
-#define TAILLE 5
+#define TAILLE 150
 int main(){
     srand(time(NULL));
-    int p;
-    int t[TAILLE] ;
-    int a[TAILLE] ;
-    int f[2*TAILLE] ;
+    int t[TAILLE];
     for (int i = 0; i < TAILLE; i++){
-        t[i]=fibo(i);
-        a[i] = 2*i;
+        
+        t[i]=rand()%50;
     }
-
     affiche(t,TAILLE);
     puts("");
-    affiche(a,TAILLE);
-    puts("");
-    /* segmentation(t,TAILLE,&p);
-    printf(" %d\n",p); */
-    fusion(t,a,TAILLE,t,TAILLE);
-    affiche(f,2*TAILLE);
-   
-    
+    tri_rapide(t,TAILLE);
+    affiche(t,TAILLE );
     return 0;
 }
