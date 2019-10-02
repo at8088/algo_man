@@ -70,19 +70,19 @@ void fusion (int f[],int t1[] , unsigned int size1 , int t2[] , unsigned int siz
     unsigned int it1=0,it2=0,i=0;
     if (size1==0)  f=t2;
     if (size2==0)  f=t1;
-   // int * f = (int*)calloc(size1+size2,sizeof(int));
-    while (it1 < size1 && it2 < size2){
-        if(t1[it1] < t2[it2]){
+    while (it1 < size1 || it2 < size2){
+        if(it1 < size1 && t1[it1] < t2[it2]){
             f[i]=t1[it1];
             i++;
             it1++;
-        }else {
+        }
+        else if(it2 < size2){
             f[i]=t2[it2];
             i++;
             it2++;
         }
     }
-    while (it1 < size1){
+    /* while (it1 < size1){
         f[i]=t1[it1];
         i++;
         it1++;
@@ -92,9 +92,7 @@ void fusion (int f[],int t1[] , unsigned int size1 , int t2[] , unsigned int siz
         f[i]=t2[it2];
         i++;
         it2++;
-    }
-
-   // return f;
+    } */
 }
 void swap(int t[] , int i1 , int i2){
     int tmp = t[i1];
@@ -102,6 +100,8 @@ void swap(int t[] , int i1 , int i2){
     t[i2]=tmp;
     return ;
 }
+
+
 void segmentation(int t[] , unsigned int size ,unsigned int * indice_pivot){
    if(size ==1) {*indice_pivot=0;return;} 
    swap(t,0,size-1);
@@ -115,6 +115,9 @@ void segmentation(int t[] , unsigned int size ,unsigned int * indice_pivot){
     swap(t,j,size-1);
     *indice_pivot = j;
 }
+
+
+
 bool est_permut(int p[], int size , int N){
   bool dejavu[size];
   for(unsigned int i = 0;i<size;i++) dejavu[i]=false;
@@ -334,13 +337,12 @@ void tri_insertion(int t[], unsigned int size){
     }
 }
 void tri_fusion(int t[], unsigned int size){
-    if(size == 0 || size == 1) return;
+    if(size <= 1) return;
     if (size == 2){
         if(t[0] > t[1]) swap(t,0,1);
         return;
     }
     int *fus = (int*)calloc(size,sizeof(int));
-  
     int mid = size/2;
     tri_fusion(t,mid);
     tri_fusion(t+mid,mid+size%2);
@@ -353,14 +355,21 @@ void copie(int dest[],int src[],int size){
     memmove(dest,src,size * 4);
 }
 
-void tri_rapide(int t[],unsigned int size){         /*marche pas*/
+/*marche pas*/
+void tri_rapide(int t[],unsigned int size){      
     if (size <= 1) return;
-    int *pivot = (int*)malloc(sizeof(int));
-    segmentation(t,size,pivot);
-    if (*pivot-1 > 0){
-        tri_rapide(t,*pivot);
-    }else if (*pivot < size-1){
-    tri_rapide(t+ (*pivot)+1,size);
+    int pivot=0 ;
+    if(size ==2){
+        segmentation(t,size,&pivot);
     }
-    free(pivot);
+    segmentation(t,size,&pivot);
+    if(pivot == 0){
+        tri_rapide(t+1 , size);
+    }
+    if (pivot-1 > 0){
+        tri_rapide(t,pivot);
+    }else if (pivot < size-1){
+        tri_rapide(t+pivot , size-pivot );
+    }
+    //free(pivot);
 }
