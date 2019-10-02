@@ -341,8 +341,6 @@ void tri_fusion(int *t, unsigned int size){
 void copie(int dest[],int src[],int size){
     memmove(dest,src,size * 4);
 }
-
-/*marche pas*/
 void tri_rapide(int t[],unsigned int size){      
     if (size <= 1) return;
     unsigned int pivot;
