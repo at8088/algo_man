@@ -1,5 +1,8 @@
 #include "arbres.h"
 
+
+int nbr_tabulation=0;
+
 tree create_empty_tree(){
     return NULL;
 }
@@ -86,8 +89,84 @@ int is_complete(tree t){
     return ( is_complete(t->fd) && is_complete(t->fg) && (node_nbr(t->fd)==node_nbr(t->fg)) );
     
 }
-
-void inorder_print(tree t){
-    if (is_empty(t)) printf("L'arbre est vide.");return;
+int is_complete_v2(tree t, int size){
 
 }
+
+void print_tree(tree t){
+    if (is_empty(t)){return;}
+    char *s=calloc(nbr_tabulation,sizeof(char));
+    memset(s,'_',nbr_tabulation);
+    printf("%s",s);
+    free(s);
+    printf("%d\n",t->val);
+    nbr_tabulation++;
+    int mem_nbr_tab = nbr_tabulation;
+    if(t->fg == NULL && t->fd !=NULL){
+        char *s=calloc(nbr_tabulation,sizeof(char));
+        memset(s,'_',nbr_tabulation);
+        printf("%s",s);
+        free(s);
+        printf("*\n");
+    }
+    if(t->fg != NULL){
+        print_tree(t->fg);
+    }
+    nbr_tabulation = mem_nbr_tab;
+    if(t->fd != NULL){
+        print_tree(t->fd);
+    }
+}
+
+void print_search_tree(tree t){
+    if(t != NULL){
+        print_search_tree(t->fg);
+        printf(" %d ",t->val);
+        print_search_tree(t->fd);
+    }
+}
+
+int is_present(int value , tree t){
+    if(!is_empty(t)){
+        if(value == t->val){
+            return 1;
+        }
+        if(value > t->val){
+            return is_present(value,t->fd);
+        }else {
+            return is_present(value,t->fg);
+        }
+    }else return 0;
+}
+
+int min_tree(tree t){
+    if(!is_empty(t)){
+        tree p = t;
+        while(!is_empty(p->fg)){
+            p=p->fg;
+        }
+        if (!is_empty(p)) return p->val;
+    }
+}
+
+int is_search_tree(tree t){
+    if(is_empty(t)){
+        return 1;
+    }else{
+        if(is_empty(t->fg) && is_empty(t->fd)){
+            return 1;
+        }
+        if(is_empty(t->fg)){
+            return t->val < t->fd->val;
+        }
+        if(is_empty(t->fd)){
+            return t->val > t->fg->val;
+        }
+        
+        return ( t->val > t->fg->val && t->val < t->fd->val
+                && is_search_tree(t->fd) && is_search_tree(t->fg));
+    }
+
+}
+
+

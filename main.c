@@ -1,21 +1,19 @@
 #include "arbres.h"
-#include <stdio.h>
 
 int main(){
-    tree t = create_tree(NULL,NULL,5);
-    t->fg = create_tree(NULL,NULL,9);
-    t->fd = create_tree(NULL,NULL,6);
-    /* t->fg->fg = create_tree(NULL,NULL,3);
-    t->fg->fd = create_tree(NULL,NULL,8); */
-    t->fd->fg = create_tree(NULL,NULL,55);
-    t->fd->fd = create_tree(NULL,NULL,40);
-
-
-    tree a = create_tree(NULL,NULL,0);
-    a->fd = create_tree(NULL,NULL,1);
-    a->fd->fd = create_tree(NULL,NULL,5);
-    int h = is_complete(t);
-    printf("%d\n",h);
+    tree t = create_tree(NULL,NULL,7);
+    t->fg = create_tree(NULL,NULL,5);
+    t->fd = create_tree(NULL,NULL,10);
+    t->fg->fd = create_tree(NULL,NULL,6);
+    t->fg->fg = create_tree(NULL,NULL,4); 
+    t->fg->fg->fg = create_tree(NULL,NULL,2); 
+    t->fd->fg = create_tree(NULL,NULL,8);
+    t->fd->fd = create_tree(NULL,NULL,11);
+    print_search_tree(t);
+    int p =is_search_tree(t);
+    
+    puts("");
+    printf("is_search_tree = %d\n",p);
     destroy_tree(&t);
     return 0;
 }
