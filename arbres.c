@@ -148,8 +148,17 @@ int min_tree(tree t){
         if (!is_empty(p)) return p->val;
     }
 }
+int max_tree(tree t){
+    if(!is_empty(t)){
+        tree p = t;
+        while(!is_empty(p->fd)){
+            p=p->fd;
+        }
+        if (!is_empty(p)) return p->val;
+    }
+}
 
-int is_search_tree(tree t){
+int is_search_tree(tree t,int min , int max){
     if(is_empty(t)){
         return 1;
     }else{
@@ -157,14 +166,15 @@ int is_search_tree(tree t){
             return 1;
         }
         if(is_empty(t->fg)){
-            return t->val < t->fd->val;
+            return t->val < t->fd->val && t->fd->val >= min && t->fd->val <=max;
         }
         if(is_empty(t->fd)){
-            return t->val > t->fg->val;
+            return t->val > t->fg->val && t->fg->val >= min && t->fg->val <=max;
         }
         
-        return ( t->val > t->fg->val && t->val < t->fd->val
-                && is_search_tree(t->fd) && is_search_tree(t->fg));
+        return ( t->val > t->fg->val && t->val < t->fd->val && t->fd->val >= min && t->fd->val <=max
+                && t->fg->val >= min && t->fg->val <=max
+                && is_search_tree(t->fd,t->val,max) && is_search_tree(t->fg,min,t->val));
     }
 
 }

@@ -42,6 +42,8 @@ int is_present(int value , tree t);
 
 int min_tree(tree t);
 
-int is_search_tree(tree);
+int max_tree(tree t);
+
+int is_search_tree(tree t,int min , int max);
 
 #endif  
